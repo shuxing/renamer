@@ -3,7 +3,7 @@ const path = require('path');
 
 const { app, BrowserWindow } = electron;
 
-let appDir = path.join(__dirname, '../app');
+let srcDir = path.join(__dirname, '../');
 
 let mainWindow;
 app.on('ready', _ => {
@@ -13,7 +13,13 @@ app.on('ready', _ => {
         height: 600
     });
 
-    mainWindow.loadURL(`file://${appDir}/index.html`);
+    mainWindow.loadURL(`file://${srcDir}/index.html`);
     mainWindow.webContents.openDevTools();
     mainWindow.on('close', _ => mainWindow = null);
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform != 'darwin') {
+    app.quit();
+  }
 });
