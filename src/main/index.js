@@ -3,7 +3,7 @@ const path = require('path');
 
 const { app, BrowserWindow } = electron;
 
-let srcDir = path.join(__dirname, '../');
+let srcDir = path.join(__dirname, '..');
 
 let mainWindow;
 app.on('ready', _ => {

@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "system",
+        "moduleResolution": "node",
+        "sourceMap": false,      // .js.map files
+        "declaration": false,   // .d.ts files
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "filesGlob": [
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

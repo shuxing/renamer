@@ -4,6 +4,11 @@
     'app':                          { main: 'bootstrap.js', defaultExtension: 'js' },
   };
 
+  var map = {
+    'app':                        'app',
+    'rxjs':                       'npm:rxjs',
+  }
+
   var packageNames = [
     'common',
     'compiler',
@@ -18,6 +23,7 @@
   // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
   packageNames.forEach(function (pkgName) {
     packages['@angular/' + pkgName] = { main: 'bundles/' + pkgName + '.umd.min.js', defaultExtension: 'js' };
+    map['@angular/'+pkgName] = 'npm:@angular/' + pkgName;
   });
 
   var config = {
@@ -28,8 +34,10 @@
 
     // Maps all rxjs to the bundled version... included in head.
     paths: {
+      'npm:': '../node_modules/'
       // "rxjs/*": "rxjs/bundles/Rx.min.js"
     },
+    map: map,
     bundles: {
             "../www/bundles/Rx.min.js": [
                 "rxjs/*",
