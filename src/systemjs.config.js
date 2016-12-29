@@ -39,7 +39,7 @@
     },
     map: map,
     bundles: {
-            "../www/bundles/Rx.min.js": [
+            "../dist/bundles/Rx.min.js": [
                 "rxjs/*",
                 "rxjs/operator/*",
                 "rxjs/observable/*",
