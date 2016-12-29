@@ -12,6 +12,10 @@
     <script src="systemjs.config.js"></script>
     <script type="text/javascript">
         System.import('app').catch(function (err) { console.error(err); });
+        // To prevent issues with loading electron in your renderer
+        // It is far better to load electron in index.html 
+        // than to try to require it from within Angular Components. 
+        var electron = require('electron');
     </script>
 </head>
 
