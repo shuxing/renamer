@@ -9,7 +9,7 @@
         "emitDecoratorMetadata": true
     },
     "filesGlob": [
-        "**/*.ts"
+        "src/app/**/*.ts"
     ],
     "exclude": [
         "node_modules"

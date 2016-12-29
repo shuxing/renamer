@@ -28,7 +28,7 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                     template: `
     <header></header>
     <div class='container'>
-        <h2>Hello Electron!!!</h2>
+        <h2>Hello Electron with Live Reload!</h2>
         <router-outlet></router-outlet>
     </div>`
                 }),

@@ -1,17 +1,41 @@
 'use strict';
 
-var gulp = require('gulp');
-var electron = require('electron-connect').server.create();
+const gulp = require('gulp');
+const changed = require('gulp-changed');
+const ts = require('gulp-typescript');
+const shell = require('gulp-shell');
 
-gulp.task('serve', function () {
-    // Start browser process 
-    electron.start();
+const tsProject = ts.createProject('tsconfig.json');
 
-    // Restart browser process 
-    gulp.watch('src/main/index.js', electron.restart);
+const paths = {
+    tsFiles: ['src/app/**/*.ts'],
+    htmlFiles: ['src/**/*.html'],
+    jsFiles: ['src/**/*.js'],
+    dest: 'dist',
+    appDest: 'dist/app'
+};
 
-    // Reload renderer process 
-    gulp.watch(['src/app/**/*.js', 'src/app/**/*.css'], electron.reload);
+gulp.task('ts', _ => {
+    var tsResult = tsProject.src().pipe(tsProject());
+    return tsResult.js.pipe(gulp.dest(paths.appDest));
 });
+
+gulp.task('html', _ => {
+    return gulp.src(paths.htmlFiles).pipe(changed(paths.dest)).pipe(gulp.dest(paths.dest));
+});
+
+gulp.task('js', _ => {
+    return gulp.src(paths.jsFiles).pipe(changed(paths.dest)).pipe(gulp.dest(paths.dest));
+});
+
+gulp.task('watch', ['html', 'js', 'ts'], function() {
+    gulp.watch(paths.htmlFiles, ['html']);
+    gulp.watch(paths.jsFiles, ['js']);
+    gulp.watch(paths.tsFiles, ['ts']);
+});
+
+gulp.task('start', shell.task('npm start'));
+
+gulp.task('serve', ['watch', 'start']);
 
 gulp.task('default', ['serve']);
