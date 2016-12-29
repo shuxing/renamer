@@ -28,10 +28,9 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                     template: `
     <header></header>
     <div class='container'>
-        <h2>Hello, World</h2>
-      <router-outlet></router-outlet>
-    </div>
-  `
+        <h2>Hello Electron!!!</h2>
+        <router-outlet></router-outlet>
+    </div>`
                 }),
                 __metadata("design:paramtypes", [])
             ], AppComponent);

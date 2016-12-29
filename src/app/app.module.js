@@ -37,10 +37,10 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
             };
             AppModule = __decorate([
                 core_1.NgModule({
+                    bootstrap: [app_component_1.AppComponent],
                     imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, app_routing_module_1.AppRoutingModule],
                     declarations: [app_component_1.AppComponent],
-                    providers: [],
-                    bootstrap: [app_component_1.AppComponent]
+                    providers: []
                 }),
                 __metadata("design:paramtypes", [])
             ], AppModule);

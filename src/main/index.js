@@ -4,6 +4,7 @@ const path = require('path');
 const { app, BrowserWindow } = electron;
 
 let srcDir = path.join(__dirname, '..');
+require('electron-reload')(path.join(srcDir, 'app'));
 
 let mainWindow;
 app.on('ready', _ => {

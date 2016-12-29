@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, router_1, appRoutes, appRoutingProviders, routing, AppRoutingModule;
+    var core_1, router_1, appRoutes, appRoutingProviders, AppRoutingModule;
     return {
         setters: [
             function (core_1_1) {
@@ -28,14 +28,14 @@ System.register(["@angular/core", "@angular/router"], function (exports_1, conte
                     pathMatch: 'full'
                 }
             ];
-            exports_1("appRoutingProviders", appRoutingProviders = []);
-            exports_1("routing", routing = router_1.RouterModule.forRoot(appRoutes));
+            appRoutingProviders = [];
             AppRoutingModule = class AppRoutingModule {
             };
             AppRoutingModule = __decorate([
                 core_1.NgModule({
-                    imports: [router_1.RouterModule.forRoot(appRoutes)],
-                    exports: [router_1.RouterModule]
+                    imports: [router_1.RouterModule.forRoot(appRoutes, { useHash: true })],
+                    exports: [router_1.RouterModule],
+                    providers: []
                 }),
                 __metadata("design:paramtypes", [])
             ], AppRoutingModule);

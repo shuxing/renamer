@@ -1,5 +1,5 @@
-import { NgModule }                         from '@angular/core';
-import { Routes, RouterModule }             from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 const appRoutes: Routes = [
     {
@@ -9,13 +9,11 @@ const appRoutes: Routes = [
     }
 ];
 
-export const appRoutingProviders: any[] = [
-];
-
-export const routing = RouterModule.forRoot(appRoutes);
+const appRoutingProviders: any[] = [];
 
 @NgModule({
-    imports: [ RouterModule.forRoot(appRoutes) ],
-    exports: [ RouterModule ]
+    imports: [ RouterModule.forRoot(appRoutes, { useHash: true }) ],
+    exports: [RouterModule],
+    providers: [ ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

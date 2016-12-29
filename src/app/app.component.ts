@@ -5,10 +5,9 @@ import { Component, OnInit } from '@angular/core';
     template: `
     <header></header>
     <div class='container'>
-        <h2>Hello, World</h2>
-      <router-outlet></router-outlet>
-    </div>
-  `
+        <h2>Hello Electron!!!</h2>
+        <router-outlet></router-outlet>
+    </div>`
 })
 export class AppComponent implements OnInit {
     ngOnInit() {
