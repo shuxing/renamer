@@ -1,4 +1,4 @@
-System.register(["@angular/core"], function (exports_1, context_1) {
+System.register(["@angular/core", "fs"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,35 +10,49 @@ System.register(["@angular/core"], function (exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, AppComponent;
+    var core_1, fs, ViewerComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (fs_1) {
+                fs = fs_1;
             }
         ],
         execute: function () {
-            AppComponent = class AppComponent {
+            ViewerComponent = class ViewerComponent {
                 ngOnInit() {
                 }
+                ngOnChanges(changes) {
+                    if (changes['path']) {
+                        this.load();
+                    }
+                }
+                load() {
+                    if (this.path && this.path.length > 0) {
+                        fs.readdir(this.path, (err, files) => {
+                            this.children = files;
+                        });
+                    }
+                }
             };
-            AppComponent = __decorate([
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", String)
+            ], ViewerComponent.prototype, "path", void 0);
+            ViewerComponent = __decorate([
                 core_1.Component({
-                    selector: 'app',
+                    selector: 'viewer',
                     template: `
-    <header></header>
     <div class='container'>
-        <h2>Hello Electron with Live Reload!</h2>
-        <input type='text' name='source' [(ngModel)]='source' />
-        <input type='text' name='destination' [(ngModel)]='destination' />
-        <viewer name='sourceViewer' [path]='source'></viewer>
-        <viewer name='destinationViewer' [path]='destination'></viewer>
-        <router-outlet></router-outlet>
+        <h2>{{path}}</h2>
+        <h3 *ngFor='let child of children'>{{child}}</h3>
     </div>`
                 }),
                 __metadata("design:paramtypes", [])
-            ], AppComponent);
-            exports_1("AppComponent", AppComponent);
+            ], ViewerComponent);
+            exports_1("ViewerComponent", ViewerComponent);
         }
     };
 });

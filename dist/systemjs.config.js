@@ -5,7 +5,8 @@
   };
 
   var map = {
-    'app': 'app'
+    'app': 'app',
+    'fs' : '@node/fs'
   }
 
   var packageNames = [
