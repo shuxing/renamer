@@ -1,4 +1,4 @@
-System.register(["@angular/core", "fs"], function (exports_1, context_1) {
+System.register(["@angular/core", "fs-promise"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -8,6 +8,14 @@ System.register(["@angular/core", "fs"], function (exports_1, context_1) {
     };
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
+    var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments)).next());
+        });
     };
     var __moduleName = context_1 && context_1.id;
     var core_1, fs, ViewerComponent;
@@ -25,16 +33,18 @@ System.register(["@angular/core", "fs"], function (exports_1, context_1) {
                 ngOnInit() {
                 }
                 ngOnChanges(changes) {
-                    if (changes['path']) {
-                        this.load();
-                    }
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (changes['path']) {
+                            yield this.load();
+                        }
+                    });
                 }
                 load() {
-                    if (this.path && this.path.length > 0) {
-                        fs.readdir(this.path, (err, files) => {
-                            this.children = files;
-                        });
-                    }
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (this.path && this.path.length > 0) {
+                            this.children = yield fs.readdir(this.path);
+                        }
+                    });
                 }
             };
             __decorate([

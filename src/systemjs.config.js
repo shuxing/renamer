@@ -6,7 +6,8 @@
 
   var map = {
     'app': 'app',
-    'fs' : '@node/fs'
+    'path' : '@node/path',
+    'fs-promise' : '@node/fs-promise'
   }
 
   var packageNames = [

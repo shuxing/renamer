@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
-import * as fs from 'fs';
+import * as fs from 'fs-promise';
 
 @Component({
     selector: 'viewer',
@@ -16,17 +16,15 @@ export class ViewerComponent implements OnInit, OnChanges {
     ngOnInit() {
     }
 
-    ngOnChanges(changes: SimpleChanges) {
+    async ngOnChanges(changes: SimpleChanges) {
         if (changes['path']) {
-            this.load();
+            await this.load();
         }
     }
 
-    load() {
+    async load() {
         if (this.path && this.path.length > 0) {
-            fs.readdir(this.path, (err, files) => {
-                this.children = files;
-            });
+            this.children = await fs.readdir(this.path);
         }
     }
 }
