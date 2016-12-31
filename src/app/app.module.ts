@@ -7,9 +7,11 @@ import { AppRoutingModule }                     from './app.routing.module';
 import { AppComponent }                         from './app.component';
 import { ViewerComponent }                      from './viewer.component';
 
+import { TreeModule }                           from 'angular2-tree-component';
+
 @NgModule({
   bootstrap:    [ AppComponent ],
-  imports:      [ BrowserModule, FormsModule, HttpModule, AppRoutingModule ],
+  imports:      [ BrowserModule, FormsModule, HttpModule, AppRoutingModule, TreeModule ],
   declarations: [ AppComponent, ViewerComponent ],
   providers:    [ ]
 })

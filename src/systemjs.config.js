@@ -2,10 +2,14 @@
   //packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app': { main: 'bootstrap.js', defaultExtension: 'js' },
+    'lodash': { main: 'lodash.js', defaultExtension: 'js' },
+    'angular2-tree-component': { main: 'dist/angular2-tree-component.js', defaultExtension: 'js' }
   };
 
   var map = {
     'app': 'app',
+    'angular2-tree-component': 'npm:angular2-tree-component',
+    'lodash': 'npm:lodash',
     'path' : '@node/path',
     'fs-promise' : '@node/fs-promise'
   }

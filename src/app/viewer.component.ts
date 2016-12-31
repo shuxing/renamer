@@ -5,12 +5,13 @@ import * as fs from 'fs-promise';
     selector: 'viewer',
     template: `
     <div class='container'>
-        <h3 *ngFor='let child of children'>{{child}}</h3>
+        <!-- <h3 *ngFor='let child of children'>{{child}}</h3> -->
+        <Tree [nodes]='nodes'></Tree>
     </div>`
 })
 export class ViewerComponent implements OnInit, OnChanges {
     @Input() path: string;
-    children;
+    nodes;
 
     ngOnInit() {
     }

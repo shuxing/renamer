@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/platform-browser", "@angular/forms", "@angular/http", "./app.routing.module", "./app.component", "./viewer.component"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/platform-browser", "@angular/forms", "@angular/http", "./app.routing.module", "./app.component", "./viewer.component", "angular2-tree-component"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, platform_browser_1, forms_1, http_1, app_routing_module_1, app_component_1, viewer_component_1, AppModule;
+    var core_1, platform_browser_1, forms_1, http_1, app_routing_module_1, app_component_1, viewer_component_1, angular2_tree_component_1, AppModule;
     return {
         setters: [
             function (core_1_1) {
@@ -33,6 +33,9 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
             },
             function (viewer_component_1_1) {
                 viewer_component_1 = viewer_component_1_1;
+            },
+            function (angular2_tree_component_1_1) {
+                angular2_tree_component_1 = angular2_tree_component_1_1;
             }
         ],
         execute: function () {
@@ -41,7 +44,7 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
             AppModule = __decorate([
                 core_1.NgModule({
                     bootstrap: [app_component_1.AppComponent],
-                    imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, app_routing_module_1.AppRoutingModule],
+                    imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, app_routing_module_1.AppRoutingModule, angular2_tree_component_1.TreeModule],
                     declarations: [app_component_1.AppComponent, viewer_component_1.ViewerComponent],
                     providers: []
                 }),
