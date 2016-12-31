@@ -5,7 +5,6 @@ import * as fs from 'fs-promise';
     selector: 'viewer',
     template: `
     <div class='container'>
-        <h2>{{path}}</h2>
         <h3 *ngFor='let child of children'>{{child}}</h3>
     </div>`
 })

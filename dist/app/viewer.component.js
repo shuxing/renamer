@@ -56,7 +56,6 @@ System.register(["@angular/core", "fs-promise"], function (exports_1, context_1)
                     selector: 'viewer',
                     template: `
     <div class='container'>
-        <h2>{{path}}</h2>
         <h3 *ngFor='let child of children'>{{child}}</h3>
     </div>`
                 }),
