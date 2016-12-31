@@ -6,7 +6,11 @@
   "scripts": {
     "start": "electron ."
   },
-  "author": "",
+  "author": "Shuxing Xiao",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shuxing/renamer.git"
+  },
   "license": "ISC",
   "dependencies": {
     "@angular/common": "^2.4.1",

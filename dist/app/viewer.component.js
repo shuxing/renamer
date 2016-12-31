@@ -1,4 +1,4 @@
-System.register(["@angular/core", "fs-promise"], function (exports_1, context_1) {
+System.register(["@angular/core", "fs-promise", "path"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18,7 +18,7 @@ System.register(["@angular/core", "fs-promise"], function (exports_1, context_1)
         });
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, fs, ViewerComponent;
+    var core_1, fs, path, ViewerComponent;
     return {
         setters: [
             function (core_1_1) {
@@ -26,10 +26,18 @@ System.register(["@angular/core", "fs-promise"], function (exports_1, context_1)
             },
             function (fs_1) {
                 fs = fs_1;
+            },
+            function (path_1) {
+                path = path_1;
             }
         ],
         execute: function () {
             ViewerComponent = class ViewerComponent {
+                constructor() {
+                    this.options = {
+                        getChildren: node => new Promise((resolve) => resolve(this.getChildren(node)))
+                    };
+                }
                 ngOnInit() {
                 }
                 ngOnChanges(changes) {
@@ -42,8 +50,29 @@ System.register(["@angular/core", "fs-promise"], function (exports_1, context_1)
                 load() {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (this.path && this.path.length > 0) {
-                            this.children = yield fs.readdir(this.path);
+                            this.nodes = yield this.readDir(this.path);
                         }
+                    });
+                }
+                readDir(dir, parent = undefined) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        const files = yield fs.readdir(dir);
+                        let list = [];
+                        const depth = parent && parent.level || 1;
+                        for (let i = 0; i < files.length; ++i) {
+                            const file = files[i];
+                            const fullPath = path.join(dir, file);
+                            const stat = yield fs.stat(fullPath);
+                            let node = { id: depth + '.' + i, name: file, path: fullPath };
+                            node.hasChildren = node.isDirectory = stat.isDirectory();
+                            list.push(node);
+                        }
+                        return list;
+                    });
+                }
+                getChildren(node) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        return yield this.readDir(node.data.path, node);
                     });
                 }
             };
@@ -57,7 +86,7 @@ System.register(["@angular/core", "fs-promise"], function (exports_1, context_1)
                     template: `
     <div class='container'>
         <!-- <h3 *ngFor='let child of children'>{{child}}</h3> -->
-        <Tree [nodes]='nodes'></Tree>
+        <Tree [nodes]='nodes' [options]='options'></Tree>
     </div>`
                 }),
                 __metadata("design:paramtypes", [])
