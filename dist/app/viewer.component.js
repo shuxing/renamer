@@ -126,13 +126,15 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
         <Tree [nodes]='nodes' [options]='options'>
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
-                <span>{{ node.data.name }}</span>
-                <span *ngIf='node.data.newName'>-{{ node.data.newName }}</span>
+                <span [class.replaced]='node.data.newName?.length > 0'>{{ node.data.name }}</span>
+                <span *ngIf='node.data.newName' class='new'>{{ node.data.newName }}</span>
             </template>
         </Tree>
     </div>`,
                     styles: [`
     .icon { margin: 0 0.5rem;}
+    .replaced { text-decoration: line-through; }
+    .new { color: green; }
     `]
                 }),
                 __metadata("design:paramtypes", [])
