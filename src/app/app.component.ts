@@ -15,8 +15,8 @@ import { Component, OnInit } from '@angular/core';
         <input type='text' class='column' name='destinationReplacement' [(ngModel)]='destinationReplacement' />
         </div>
         <div class='flex'>
-        <viewer class='column' name='sourceViewer' [path]='source' [regex]='sourceRegex'></viewer>
-        <viewer class='column' name='destinationViewer' [path]='destination' [replacement]='destinationReplacement'></viewer>
+        <viewer class='column' name='sourceViewer' [path]='source' [regex]='sourceRegex' [replacement]='destinationReplacement'></viewer>
+        <viewer class='column' name='destinationViewer' [path]='destination'></viewer>
         </div>
         <router-outlet></router-outlet>
     </div>`,
@@ -29,8 +29,8 @@ export class AppComponent implements OnInit {
 
     private source: string = 'D:/dl/7天搞定Node.js微信公众号开发（更多视频 www.pcsky.wang)';
     private destination: string = 'D:/tutorial/wechat/public';
-    private sourceRegex: string = '';
-    private destinationReplacement: string = '';
+    private sourceRegex: string = '第(.*)章 (.*)(（.*)';
+    private destinationReplacement: string = '$1 - $2';
 
     ngOnInit() {
     }

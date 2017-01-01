@@ -45,13 +45,9 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                         if (changes['path']) {
                             yield this.load();
                         }
-                        else if (changes['regex']) {
-                            this.compiledRegex = new RegExp(this.regex);
-                            this.match(this.nodes, this.compiledRegex, this.replacement);
-                        }
-                        else if (changes['replacement']) {
-                            this.match(this.nodes, this.compiledRegex, this.replacement);
-                        }
+                        // else if (changes['regex'] || changes['replacement']) {
+                        this.match(this.nodes, this.regex, this.replacement);
+                        // }
                     });
                 }
                 load() {
@@ -95,12 +91,16 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                     }
                 }
                 match(nodes, r, replacement) {
-                    if (nodes && nodes.length > 0 && r && replacement) {
+                    if (nodes && nodes.length > 0 && r && r.length > 0 && replacement && replacement.length > 0) {
+                        const regex = new RegExp(r);
                         for (const node of nodes) {
                             // const match = r.exec(node.name);
                             // match.forEach(console.log);
-                            const replaced = node.name.replace(r, replacement);
-                            node.newName = replaced;
+                            const current = node.name;
+                            const replaced = current.replace(regex, replacement);
+                            if (replaced !== current) {
+                                node.newName = replaced;
+                            }
                         }
                     }
                 }

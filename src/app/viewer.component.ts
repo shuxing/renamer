@@ -37,17 +37,15 @@ export class ViewerComponent implements OnInit, OnChanges {
     async ngOnChanges(changes: SimpleChanges) {
         if (changes['path']) {
             await this.load();
-        } else if (changes['regex']) {
-            this.compiledRegex = new RegExp(this.regex);
-            this.match(this.nodes, this.compiledRegex, this.replacement);
-        } else if (changes['replacement']) {
-            this.match(this.nodes, this.compiledRegex, this.replacement);
         }
+        // else if (changes['regex'] || changes['replacement']) {
+        this.match(this.nodes, this.regex, this.replacement);
+        // }
     }
 
     async load() {
         if (this.path && this.path.length > 0) {
-            this.nodes = await this.readDir(<TreeNode>{data:{path:this.path}});
+            this.nodes = await this.readDir(<TreeNode>{ data: { path: this.path } });
         }
     }
 
@@ -82,13 +80,17 @@ export class ViewerComponent implements OnInit, OnChanges {
         }
     }
 
-    match(nodes: any[], r: RegExp, replacement: string) {
-        if(nodes && nodes.length > 0 && r && replacement) {
-            for(const node of nodes) {
+    match(nodes: any[], r: string, replacement: string) {
+        if (nodes && nodes.length > 0 && r && r.length > 0 && replacement && replacement.length > 0) {
+            const regex = new RegExp(r);
+            for (const node of nodes) {
                 // const match = r.exec(node.name);
                 // match.forEach(console.log);
-                const replaced = node.name.replace(r, replacement);
-                node.newName = replaced;
+                const current = node.name;
+                const replaced = current.replace(regex, replacement);
+                if (replaced !== current) {
+                    node.newName = replaced;
+                }
             }
         }
     }

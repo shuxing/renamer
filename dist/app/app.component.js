@@ -22,8 +22,8 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                 constructor() {
                     this.source = 'D:/dl/7天搞定Node.js微信公众号开发（更多视频 www.pcsky.wang)';
                     this.destination = 'D:/tutorial/wechat/public';
-                    this.sourceRegex = '';
-                    this.destinationReplacement = '';
+                    this.sourceRegex = '第(.*)章 (.*)(（.*)';
+                    this.destinationReplacement = '$1 - $2';
                 }
                 ngOnInit() {
                 }
@@ -44,8 +44,8 @@ System.register(["@angular/core"], function (exports_1, context_1) {
         <input type='text' class='column' name='destinationReplacement' [(ngModel)]='destinationReplacement' />
         </div>
         <div class='flex'>
-        <viewer class='column' name='sourceViewer' [path]='source' [regex]='sourceRegex'></viewer>
-        <viewer class='column' name='destinationViewer' [path]='destination' [replacement]='destinationReplacement'></viewer>
+        <viewer class='column' name='sourceViewer' [path]='source' [regex]='sourceRegex' [replacement]='destinationReplacement'></viewer>
+        <viewer class='column' name='destinationViewer' [path]='destination'></viewer>
         </div>
         <router-outlet></router-outlet>
     </div>`,
