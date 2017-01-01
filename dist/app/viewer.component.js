@@ -45,6 +45,13 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                         if (changes['path']) {
                             yield this.load();
                         }
+                        else if (changes['regex']) {
+                            this.compiledRegex = new RegExp(this.regex);
+                            this.match(this.nodes, this.compiledRegex, this.replacement);
+                        }
+                        else if (changes['replacement']) {
+                            this.match(this.nodes, this.compiledRegex, this.replacement);
+                        }
                     });
                 }
                 load() {
@@ -87,11 +94,29 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                         return prefix + 'file-o';
                     }
                 }
+                match(nodes, r, replacement) {
+                    if (nodes && nodes.length > 0 && r && replacement) {
+                        for (const node of nodes) {
+                            // const match = r.exec(node.name);
+                            // match.forEach(console.log);
+                            const replaced = node.name.replace(r, replacement);
+                            node.newName = replaced;
+                        }
+                    }
+                }
             };
             __decorate([
                 core_1.Input(),
                 __metadata("design:type", String)
             ], ViewerComponent.prototype, "path", void 0);
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", String)
+            ], ViewerComponent.prototype, "regex", void 0);
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", String)
+            ], ViewerComponent.prototype, "replacement", void 0);
             ViewerComponent = __decorate([
                 core_1.Component({
                     selector: 'viewer',
@@ -102,6 +127,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
                 <span>{{ node.data.name }}</span>
+                <span *ngIf='node.data.newName'>-{{ node.data.newName }}</span>
             </template>
         </Tree>
     </div>`,

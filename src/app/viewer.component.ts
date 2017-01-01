@@ -12,6 +12,7 @@ import * as path from 'path';
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
                 <span>{{ node.data.name }}</span>
+                <span *ngIf='node.data.newName'>-{{ node.data.newName }}</span>
             </template>
         </Tree>
     </div>`,
@@ -21,6 +22,10 @@ import * as path from 'path';
 })
 export class ViewerComponent implements OnInit, OnChanges {
     @Input() path: string;
+    @Input() regex: string;
+    @Input() replacement: string;
+
+    compiledRegex: RegExp;
     nodes;
     options = {
         getChildren: this.getChildren.bind(this)
@@ -32,6 +37,11 @@ export class ViewerComponent implements OnInit, OnChanges {
     async ngOnChanges(changes: SimpleChanges) {
         if (changes['path']) {
             await this.load();
+        } else if (changes['regex']) {
+            this.compiledRegex = new RegExp(this.regex);
+            this.match(this.nodes, this.compiledRegex, this.replacement);
+        } else if (changes['replacement']) {
+            this.match(this.nodes, this.compiledRegex, this.replacement);
         }
     }
 
@@ -69,6 +79,17 @@ export class ViewerComponent implements OnInit, OnChanges {
             return prefix + 'folder' + (node.isExpanded ? '-open' : '') + '-o';
         } else {
             return prefix + 'file-o';
+        }
+    }
+
+    match(nodes: any[], r: RegExp, replacement: string) {
+        if(nodes && nodes.length > 0 && r && replacement) {
+            for(const node of nodes) {
+                // const match = r.exec(node.name);
+                // match.forEach(console.log);
+                const replaced = node.name.replace(r, replacement);
+                node.newName = replaced;
+            }
         }
     }
 }
