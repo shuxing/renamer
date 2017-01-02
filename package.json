@@ -33,6 +33,7 @@
     "zone.js": "^0.7.4"
   },
   "devDependencies": {
+    "@types/node": "^6.0.55",
     "electron": "^1.4.13",
     "electron-reload": "^1.1.0",
     "gulp": "^3.9.1",

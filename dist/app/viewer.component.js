@@ -122,7 +122,6 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                     selector: 'viewer',
                     template: `
     <div class='container'>
-        <!-- <h3 *ngFor='let child of children'>{{child}}</h3> -->
         <Tree [nodes]='nodes' [options]='options'>
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
