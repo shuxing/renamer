@@ -1,4 +1,4 @@
-System.register(["@angular/core", "@angular/platform-browser", "@angular/forms", "@angular/http", "./app.routing.module", "./app.component", "./viewer.component", "angular2-tree-component"], function (exports_1, context_1) {
+System.register(["@angular/core", "@angular/platform-browser", "@angular/forms", "@angular/http", "angular2-tree-component", "./app.routing.module", "./app.component", "./viewer.component"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,7 +10,7 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, platform_browser_1, forms_1, http_1, app_routing_module_1, app_component_1, viewer_component_1, angular2_tree_component_1, AppModule;
+    var core_1, platform_browser_1, forms_1, http_1, angular2_tree_component_1, app_routing_module_1, app_component_1, viewer_component_1, AppModule;
     return {
         setters: [
             function (core_1_1) {
@@ -25,6 +25,9 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
             function (http_1_1) {
                 http_1 = http_1_1;
             },
+            function (angular2_tree_component_1_1) {
+                angular2_tree_component_1 = angular2_tree_component_1_1;
+            },
             function (app_routing_module_1_1) {
                 app_routing_module_1 = app_routing_module_1_1;
             },
@@ -33,9 +36,6 @@ System.register(["@angular/core", "@angular/platform-browser", "@angular/forms",
             },
             function (viewer_component_1_1) {
                 viewer_component_1 = viewer_component_1_1;
-            },
-            function (angular2_tree_component_1_1) {
-                angular2_tree_component_1 = angular2_tree_component_1_1;
             }
         ],
         execute: function () {

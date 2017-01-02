@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { TreeNode } from 'angular2-tree-component';
 import * as fs from 'fs-promise';
 import * as path from 'path';
@@ -26,6 +26,7 @@ export class ViewerComponent implements OnInit, OnChanges {
     @Input() path: string;
     @Input() regex: string;
     @Input() replacement: string;
+    @Output() nodesChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
 
     compiledRegex: RegExp;
     nodes;
@@ -48,6 +49,7 @@ export class ViewerComponent implements OnInit, OnChanges {
     async load() {
         if (this.path && this.path.length > 0) {
             this.nodes = await this.readDir(<TreeNode>{ data: { path: this.path } });
+            this.nodesChanged.emit(this.nodes);
         }
     }
 
@@ -61,10 +63,14 @@ export class ViewerComponent implements OnInit, OnChanges {
         for (let i = 0; i < files.length; ++i) {
             const file = files[i];
             const fullPath = path.join(dir, file);
-            const stat = await fs.stat(fullPath);
-            let node: any = { id: prefix + i, name: file, path: fullPath };
-            node.hasChildren = node.isDirectory = stat.isDirectory();
-            list.push(node);
+            try {
+                const stat = await fs.stat(fullPath);
+                let node: any = { id: prefix + i, name: file, path: fullPath };
+                node.hasChildren = node.isDirectory = stat.isDirectory();
+                list.push(node);
+            } catch (e) {
+                console.error(fullPath, e);
+            }
         }
         return list;
     }

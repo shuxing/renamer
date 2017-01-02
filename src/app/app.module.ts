@@ -3,11 +3,11 @@ import { BrowserModule }                        from '@angular/platform-browser'
 import { FormsModule }                          from '@angular/forms';
 import { HttpModule }                           from '@angular/http';
 
+import { TreeModule }                           from 'angular2-tree-component';
+
 import { AppRoutingModule }                     from './app.routing.module';
 import { AppComponent }                         from './app.component';
 import { ViewerComponent }                      from './viewer.component';
-
-import { TreeModule }                           from 'angular2-tree-component';
 
 @NgModule({
   bootstrap:    [ AppComponent ],

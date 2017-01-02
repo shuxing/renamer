@@ -34,6 +34,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
         execute: function () {
             ViewerComponent = class ViewerComponent {
                 constructor() {
+                    this.nodesChanged = new core_1.EventEmitter();
                     this.options = {
                         getChildren: this.getChildren.bind(this)
                     };
@@ -54,6 +55,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                     return __awaiter(this, void 0, void 0, function* () {
                         if (this.path && this.path.length > 0) {
                             this.nodes = yield this.readDir({ data: { path: this.path } });
+                            this.nodesChanged.emit(this.nodes);
                         }
                     });
                 }
@@ -68,10 +70,15 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                         for (let i = 0; i < files.length; ++i) {
                             const file = files[i];
                             const fullPath = path.join(dir, file);
-                            const stat = yield fs.stat(fullPath);
-                            let node = { id: prefix + i, name: file, path: fullPath };
-                            node.hasChildren = node.isDirectory = stat.isDirectory();
-                            list.push(node);
+                            try {
+                                const stat = yield fs.stat(fullPath);
+                                let node = { id: prefix + i, name: file, path: fullPath };
+                                node.hasChildren = node.isDirectory = stat.isDirectory();
+                                list.push(node);
+                            }
+                            catch (e) {
+                                console.error(fullPath, e);
+                            }
                         }
                         return list;
                     });
@@ -120,6 +127,10 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                 core_1.Input(),
                 __metadata("design:type", String)
             ], ViewerComponent.prototype, "replacement", void 0);
+            __decorate([
+                core_1.Output(),
+                __metadata("design:type", core_1.EventEmitter)
+            ], ViewerComponent.prototype, "nodesChanged", void 0);
             ViewerComponent = __decorate([
                 core_1.Component({
                     selector: 'viewer',
