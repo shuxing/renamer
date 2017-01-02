@@ -101,6 +101,9 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                             if (replaced !== current) {
                                 node.newName = replaced;
                             }
+                            else {
+                                delete node.newName;
+                            }
                         }
                     }
                 }
@@ -121,7 +124,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                 core_1.Component({
                     selector: 'viewer',
                     template: `
-    <div class='container'>
+    <div class='root'>
         <Tree [nodes]='nodes' [options]='options'>
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
@@ -131,6 +134,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
         </Tree>
     </div>`,
                     styles: [`
+    .root { margin: 1rem; }
     .icon { margin: 0 0.5rem;}
     .replaced { text-decoration: line-through; }
     .new { color: green; }

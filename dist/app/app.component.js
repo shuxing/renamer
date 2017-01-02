@@ -20,10 +20,12 @@ System.register(["@angular/core"], function (exports_1, context_1) {
         execute: function () {
             AppComponent = class AppComponent {
                 constructor() {
-                    this.source = 'D:/dl/7天搞定Node.js微信公众号开发（更多视频 www.pcsky.wang)';
-                    this.destination = 'D:/tutorial/wechat/public';
-                    this.sourceRegex = '第(.*)章 (.*)(（.*)';
-                    this.destinationReplacement = '$1 - $2';
+                    // private path: string = 'D:/dl/7天搞定Node.js微信公众号开发（更多视频 www.pcsky.wang)';
+                    // private sourceRegex: string = '第(.*)章 (.*)(（.*)';
+                    // private destinationReplacement: string = '$1 - $2';
+                    this.path = '/Users/Sean/dev/angular';
+                    this.sourceRegex = '(.*)(\.js)';
+                    this.destinationReplacement = '$1.ts';
                 }
                 ngOnInit() {
                 }
@@ -34,24 +36,22 @@ System.register(["@angular/core"], function (exports_1, context_1) {
                     template: `
     <header></header>
     <div class='root'>
-        <h2>Hello Electron with Live Reload!</h2>
+        <h2>Rename files with RegExp</h2>
         <div class='flex'>
-        <input type='text' class='column' name='source' [(ngModel)]='source' />
-        <input type='text' class='column' name='destination' [(ngModel)]='destination' />
+        <input type='text' class='column' name='path' [(ngModel)]='path' />
         </div>
         <div class='flex'>
         <input type='text' class='column' name='sourceRegex' [(ngModel)]='sourceRegex' />
+        <i class='fa fa-arrow-right separator'></i>
         <input type='text' class='column' name='destinationReplacement' [(ngModel)]='destinationReplacement' />
         </div>
-        <div class='flex'>
-        <viewer class='column' name='sourceViewer' [path]='source' [regex]='sourceRegex' [replacement]='destinationReplacement'></viewer>
-        <viewer class='column' name='destinationViewer' [path]='destination'></viewer>
-        </div>
+        <viewer class='column' name='sourceViewer' [path]='path' [regex]='sourceRegex' [replacement]='destinationReplacement'></viewer>
         <router-outlet></router-outlet>
     </div>`,
                     styles: [`
         .flex { display: flex; }
         .flex .column { flex: 1; margin: 0 1rem; overflow: auto; }
+        .flex .separator { flex: 0 0 20px; align-self: center; font-size: 20px }
     `]
                 }),
                 __metadata("design:paramtypes", [])

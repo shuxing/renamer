@@ -6,7 +6,7 @@ import * as path from 'path';
 @Component({
     selector: 'viewer',
     template: `
-    <div class='container'>
+    <div class='root'>
         <Tree [nodes]='nodes' [options]='options'>
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
@@ -16,6 +16,7 @@ import * as path from 'path';
         </Tree>
     </div>`,
     styles: [`
+    .root { margin: 1rem; }
     .icon { margin: 0 0.5rem;}
     .replaced { text-decoration: line-through; }
     .new { color: green; }
@@ -91,6 +92,8 @@ export class ViewerComponent implements OnInit, OnChanges {
                 const replaced = current.replace(regex, replacement);
                 if (replaced !== current) {
                     node.newName = replaced;
+                } else {
+                    delete node.newName;
                 }
             }
         }
