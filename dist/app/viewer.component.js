@@ -1,4 +1,4 @@
-System.register(["@angular/core", "fs-promise", "path"], function (exports_1, context_1) {
+System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path"], function (exports_1, context_1) {
     "use strict";
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18,11 +18,14 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
         });
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, fs, path, ViewerComponent;
+    var core_1, angular2_tree_component_1, fs, path, ViewerComponent;
     return {
         setters: [
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (angular2_tree_component_1_1) {
+                angular2_tree_component_1 = angular2_tree_component_1_1;
             },
             function (fs_1) {
                 fs = fs_1;
@@ -43,41 +46,44 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                 }
                 ngOnChanges(changes) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        if (changes['path']) {
+                        if (changes['path'] || changes['recursive']) {
                             yield this.load();
+                            this.tree.treeModel.update();
                         }
-                        // else if (changes['regex'] || changes['replacement']) {
-                        this.match(this.nodes, this.regex, this.replacement);
-                        // }
+                        this.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
                     });
                 }
                 load() {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (this.path && this.path.length > 0) {
-                            this.nodes = yield this.readDir({ data: { path: this.path } });
+                            this.nodes = yield this.readDir({ path: this.path }, this.recursive);
                             this.nodesChanged.emit(this.nodes);
                         }
                     });
                 }
-                readDir(parent) {
+                readDir(node, recursive) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        let data = parent && parent.data;
-                        let dir = data && data.path;
+                        let dir = node && node.path;
                         const files = yield fs.readdir(dir);
                         let list = [];
-                        const parentId = data && data.id;
+                        const parentId = node && node.id;
                         const prefix = parentId ? parentId + '.' : '';
                         for (let i = 0; i < files.length; ++i) {
                             const file = files[i];
                             const fullPath = path.join(dir, file);
+                            let child;
                             try {
                                 const stat = yield fs.stat(fullPath);
-                                let node = { id: prefix + i, name: file, path: fullPath };
-                                node.hasChildren = node.isDirectory = stat.isDirectory();
-                                list.push(node);
+                                child = { id: prefix + i, name: file, path: fullPath };
+                                child.hasChildren = child.isDirectory = stat.isDirectory();
+                                list.push(child);
                             }
                             catch (e) {
                                 console.error(fullPath, e);
+                            }
+                            if (recursive && child && child.hasChildren) {
+                                child.children = yield this.readDir(child, recursive);
+                                child.hasChildren = child.children.length > 0;
                             }
                         }
                         return list;
@@ -85,7 +91,7 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                 }
                 getChildren(node) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        return yield this.readDir(node);
+                        return yield this.readDir(node.data, this.recursive);
                     });
                 }
                 nodeIconClass(node) {
@@ -97,9 +103,10 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                         return prefix + 'file-o';
                     }
                 }
-                match(nodes, r, replacement) {
+                match(nodes, r, replacement, recursive, caseSensitive) {
                     if (nodes && nodes.length > 0 && r && r.length > 0 && replacement && replacement.length > 0) {
-                        const regex = new RegExp(r);
+                        const flags = caseSensitive ? '' : 'i';
+                        const regex = new RegExp(r, flags);
                         for (const node of nodes) {
                             // const match = r.exec(node.name);
                             // match.forEach(console.log);
@@ -110,6 +117,9 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                             }
                             else {
                                 delete node.newName;
+                            }
+                            if (this.recursive && node.children) {
+                                this.match(node.children, r, replacement, recursive, caseSensitive);
                             }
                         }
                     }
@@ -128,15 +138,27 @@ System.register(["@angular/core", "fs-promise", "path"], function (exports_1, co
                 __metadata("design:type", String)
             ], ViewerComponent.prototype, "replacement", void 0);
             __decorate([
+                core_1.Input(),
+                __metadata("design:type", Boolean)
+            ], ViewerComponent.prototype, "recursive", void 0);
+            __decorate([
+                core_1.Input(),
+                __metadata("design:type", Boolean)
+            ], ViewerComponent.prototype, "caseSensitive", void 0);
+            __decorate([
                 core_1.Output(),
                 __metadata("design:type", core_1.EventEmitter)
             ], ViewerComponent.prototype, "nodesChanged", void 0);
+            __decorate([
+                core_1.ViewChild(angular2_tree_component_1.TreeComponent),
+                __metadata("design:type", angular2_tree_component_1.TreeComponent)
+            ], ViewerComponent.prototype, "tree", void 0);
             ViewerComponent = __decorate([
                 core_1.Component({
                     selector: 'viewer',
                     template: `
     <div class='root'>
-        <Tree [nodes]='nodes' [options]='options'>
+        <Tree #tree [nodes]='nodes' [options]='options'>
             <template #treeNodeTemplate let-node='node' let-index='index'>
                 <i [class]='nodeIconClass(node)'></i>
                 <span [class.replaced]='node.data.newName?.length > 0'>{{ node.data.name }}</span>
