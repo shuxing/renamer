@@ -59,9 +59,6 @@ export class AppComponent implements OnInit {
     private path: string = 'backup';
     private sourceRegex: string = '第(.*)章 (.*)(（.*)';
     private destinationReplacement: string = '$1 - $2';
-    // private path: string = '/Users/Sean/dev/angular';
-    // private sourceRegex: string = '(.*)(\.js)';
-    // private destinationReplacement: string = '$1.ts';
 
     private recursive: boolean;
     private caseSensitive: boolean = true;

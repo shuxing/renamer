@@ -99,7 +99,9 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                 refresh() {
                     return __awaiter(this, void 0, void 0, function* () {
                         yield this.load();
-                        this.tree.treeModel.update();
+                        if (!this.recursive) {
+                            this.tree.treeModel.expandedNodeIds = {};
+                        }
                         ViewerComponent_1.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
                     });
                 }

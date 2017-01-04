@@ -9,7 +9,6 @@
   var map = {
     'app':                        'app',
     'angular2-tree-component':    'npm:angular2-tree-component',
-    'ng2-auto-complete':          'npm:ng2-auto-complete/dist/ng2-auto-complete.umd.js',
     'lodash':                     'npm:lodash',
     'path' :                      '@node/path',
     'fs-promise' :                '@node/fs-promise'
