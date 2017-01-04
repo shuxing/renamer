@@ -33,7 +33,7 @@ export class ViewerComponent implements OnInit, OnChanges {
     @ViewChild(TreeComponent)
     private tree: TreeComponent;
     compiledRegex: RegExp;
-    nodes;
+    nodes: any[];
     options = {
         getChildren: this.getChildren.bind(this)
     }
@@ -43,21 +43,20 @@ export class ViewerComponent implements OnInit, OnChanges {
 
     async ngOnChanges(changes: SimpleChanges) {
         if (changes['path'] || changes['recursive']) {
-            await this.load();
-            this.tree.treeModel.update();
+            await this.refresh();
+        } else {
+            ViewerComponent.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
         }
-
-        this.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
     }
 
     async load() {
         if (this.path && this.path.length > 0) {
-            this.nodes = await this.readDir({ path: this.path }, this.recursive);
+            this.nodes = await ViewerComponent.readDir({ path: this.path }, this.recursive);
             this.nodesChanged.emit(this.nodes);
         }
     }
 
-    async readDir(node: any, recursive: boolean) {
+    static async readDir(node: any, recursive: boolean): Promise<any[]> {
         let dir = node && node.path;
         const files = await fs.readdir(dir);
         let list = [];
@@ -76,16 +75,42 @@ export class ViewerComponent implements OnInit, OnChanges {
                 console.error(fullPath, e);
             }
 
-            if(recursive && child && child.hasChildren) {
-                child.children = await this.readDir(child, recursive);
+            if (recursive && child && child.hasChildren) {
+                child.children = await ViewerComponent.readDir(child, recursive);
                 child.hasChildren = child.children.length > 0;
             }
         }
         return list;
     }
 
+    async go() {
+        await ViewerComponent.rename(this.nodes, this.recursive);
+        await this.refresh();
+    }
+
+    async refresh() {
+        await this.load();
+        this.tree.treeModel.update();
+        ViewerComponent.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
+    }
+
+    static async rename(nodes: any[], recursive: boolean) {
+        for (let node of nodes) {
+            if (node.newName && node.newName.length > 0) {
+                const sourcePath = node.path;
+                const destinationPath = path.join(path.dirname(sourcePath), node.newName);
+                console.log(sourcePath, '\t\t--->\t', destinationPath);
+                await fs.rename(sourcePath, destinationPath);
+            }
+
+            if (recursive && node.children) {
+                ViewerComponent.rename(node.children, recursive);
+            }
+        }
+    }
+
     async getChildren(node: TreeNode) {
-        return await this.readDir(node.data, this.recursive);
+        return await ViewerComponent.readDir(node.data, this.recursive);
     }
 
     nodeIconClass(node: TreeNode) {
@@ -97,7 +122,7 @@ export class ViewerComponent implements OnInit, OnChanges {
         }
     }
 
-    match(nodes: any[], r: string, replacement: string, recursive: boolean, caseSensitive: boolean) {
+    static match(nodes: any[], r: string, replacement: string, recursive: boolean, caseSensitive: boolean) {
         if (nodes && nodes.length > 0 && r && r.length > 0 && replacement && replacement.length > 0) {
             const flags = caseSensitive ? '' : 'i';
             const regex = new RegExp(r, flags);
@@ -112,8 +137,8 @@ export class ViewerComponent implements OnInit, OnChanges {
                     delete node.newName;
                 }
 
-                if (this.recursive && node.children) {
-                    this.match(node.children, r, replacement, recursive, caseSensitive);
+                if (recursive && node.children) {
+                    ViewerComponent.match(node.children, r, replacement, recursive, caseSensitive);
                 }
             }
         }

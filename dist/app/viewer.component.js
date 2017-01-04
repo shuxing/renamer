@@ -18,7 +18,7 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
         });
     };
     var __moduleName = context_1 && context_1.id;
-    var core_1, angular2_tree_component_1, fs, path, ViewerComponent;
+    var core_1, angular2_tree_component_1, fs, path, ViewerComponent, ViewerComponent_1;
     return {
         setters: [
             function (core_1_1) {
@@ -35,7 +35,7 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
             }
         ],
         execute: function () {
-            ViewerComponent = class ViewerComponent {
+            ViewerComponent = ViewerComponent_1 = class ViewerComponent {
                 constructor() {
                     this.nodesChanged = new core_1.EventEmitter();
                     this.options = {
@@ -47,21 +47,22 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                 ngOnChanges(changes) {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (changes['path'] || changes['recursive']) {
-                            yield this.load();
-                            this.tree.treeModel.update();
+                            yield this.refresh();
                         }
-                        this.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
+                        else {
+                            ViewerComponent_1.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
+                        }
                     });
                 }
                 load() {
                     return __awaiter(this, void 0, void 0, function* () {
                         if (this.path && this.path.length > 0) {
-                            this.nodes = yield this.readDir({ path: this.path }, this.recursive);
+                            this.nodes = yield ViewerComponent_1.readDir({ path: this.path }, this.recursive);
                             this.nodesChanged.emit(this.nodes);
                         }
                     });
                 }
-                readDir(node, recursive) {
+                static readDir(node, recursive) {
                     return __awaiter(this, void 0, void 0, function* () {
                         let dir = node && node.path;
                         const files = yield fs.readdir(dir);
@@ -82,16 +83,44 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                                 console.error(fullPath, e);
                             }
                             if (recursive && child && child.hasChildren) {
-                                child.children = yield this.readDir(child, recursive);
+                                child.children = yield ViewerComponent_1.readDir(child, recursive);
                                 child.hasChildren = child.children.length > 0;
                             }
                         }
                         return list;
                     });
                 }
+                go() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield ViewerComponent_1.rename(this.nodes, this.recursive);
+                        yield this.refresh();
+                    });
+                }
+                refresh() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.load();
+                        this.tree.treeModel.update();
+                        ViewerComponent_1.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
+                    });
+                }
+                static rename(nodes, recursive) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        for (let node of nodes) {
+                            if (node.newName && node.newName.length > 0) {
+                                const sourcePath = node.path;
+                                const destinationPath = path.join(path.dirname(sourcePath), node.newName);
+                                console.log(sourcePath, '\t\t--->\t', destinationPath);
+                                yield fs.rename(sourcePath, destinationPath);
+                            }
+                            if (recursive && node.children) {
+                                ViewerComponent_1.rename(node.children, recursive);
+                            }
+                        }
+                    });
+                }
                 getChildren(node) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        return yield this.readDir(node.data, this.recursive);
+                        return yield ViewerComponent_1.readDir(node.data, this.recursive);
                     });
                 }
                 nodeIconClass(node) {
@@ -103,7 +132,7 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                         return prefix + 'file-o';
                     }
                 }
-                match(nodes, r, replacement, recursive, caseSensitive) {
+                static match(nodes, r, replacement, recursive, caseSensitive) {
                     if (nodes && nodes.length > 0 && r && r.length > 0 && replacement && replacement.length > 0) {
                         const flags = caseSensitive ? '' : 'i';
                         const regex = new RegExp(r, flags);
@@ -118,8 +147,8 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                             else {
                                 delete node.newName;
                             }
-                            if (this.recursive && node.children) {
-                                this.match(node.children, r, replacement, recursive, caseSensitive);
+                            if (recursive && node.children) {
+                                ViewerComponent_1.match(node.children, r, replacement, recursive, caseSensitive);
                             }
                         }
                     }
@@ -153,7 +182,7 @@ System.register(["@angular/core", "angular2-tree-component", "fs-promise", "path
                 core_1.ViewChild(angular2_tree_component_1.TreeComponent),
                 __metadata("design:type", angular2_tree_component_1.TreeComponent)
             ], ViewerComponent.prototype, "tree", void 0);
-            ViewerComponent = __decorate([
+            ViewerComponent = ViewerComponent_1 = __decorate([
                 core_1.Component({
                     selector: 'viewer',
                     template: `

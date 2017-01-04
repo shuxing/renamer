@@ -20,7 +20,7 @@ System.register(["@angular/core"], function (exports_1, context_1) {
         execute: function () {
             AppComponent = class AppComponent {
                 constructor() {
-                    this.path = 'D:/dl/7天搞定Node.js微信公众号开发（更多视频 www.pcsky.wang)';
+                    this.path = 'backup';
                     this.sourceRegex = '第(.*)章 (.*)(（.*)';
                     this.destinationReplacement = '$1 - $2';
                     this.caseSensitive = true;
@@ -36,24 +36,33 @@ System.register(["@angular/core"], function (exports_1, context_1) {
     <div class='root'>
         <h2 class='header'>Rename files with RegExp</h2>
         <div class='flex'>
-            <input type='text' class='column stretch' name='path' placeholder='source directory. e.g.: C:\Data' [(ngModel)]='path' />
+            <span class="label">Directory</span>
+            <input type='text' class='column stretch' name='path' 
+                placeholder='source directory. e.g.: C:\Data' 
+                [(ngModel)]='path' />
         </div>
         <div class='flex'>
-            <input type='text' class='column stretch' name='sourceRegex' [(ngModel)]='sourceRegex' />
+            <div class='flex column stretch'>
+                <span class="label">Reg. Exp.</span>
+                <input type='text' class='column stretch' name='sourceRegex' [(ngModel)]='sourceRegex' />
+            </div>
             <i class='fa fa-arrow-right separator'></i>
-            <input type='text' class='column stretch' name='destinationReplacement' [(ngModel)]='destinationReplacement' />
+            <div class='flex column stretch'>
+                <span class="label">Replacement</span>
+                <input type='text' class='column stretch' name='destinationReplacement' [(ngModel)]='destinationReplacement' />
+            </div>
         </div>
         <div class='flex'>
             <label class='column'>
-                <input type='checkbox' name='recursive' [(ngModel)]='recursive'>
-                Recursive
+                <input type='checkbox' name='recursive' [(ngModel)]='recursive'>Recursive
             </label>
             <label class='column'>
-                <input type='checkbox' name='caseSensitive' [(ngModel)]='caseSensitive'>
-                Case Sensitive
+                <input type='checkbox' name='caseSensitive' [(ngModel)]='caseSensitive'>Case Sensitive
             </label>
+            <button type='button' class='btn btn-outline-primary' (click)='viewer.go()'>GO!</button>
+            <button type='button' class='btn btn-outline-primary' (click)='viewer.refresh()'>Refresh</button>
         </div>
-        <viewer class='column' name='sourceViewer' 
+        <viewer #viewer name='sourceViewer' 
             [path]='path' 
             [regex]='sourceRegex' 
             [replacement]='destinationReplacement'
@@ -64,10 +73,14 @@ System.register(["@angular/core"], function (exports_1, context_1) {
     </div>`,
                     styles: [`
         .header { text-align: center; }
-        .flex { display: flex; margin: 1rem 0; align-items: center; align-content: center; justify-content: space-around; }
-        .flex .column { margin: 0 1rem; overflow: auto; }
+        input { padding: .5rem .75rem; }
+        .flex { display: flex; margin: 1rem; align-items: center; align-content: center; justify-content: space-around; }
+        .flex .label:first-child { padding: .5rem .75rem; background-color: #eceeef; border: 1px solid rgba(0,0,0,.15); border-radius: .25rem 0 0 .25rem; }
+        .flex input[type=text]:last-child {  border: 1px solid rgba(0,0,0,.15); border-radius: 0 .25rem .25rem 0; height: 42px; }
+        .flex .flex { margin: 0; }
+        .flex .column { overflow: auto; }
         .flex .stretch { flex: 1; }
-        .flex .separator { flex: 0 0 20px; font-size: 20px }
+        .flex .separator { flex: 0 0 20px; margin: 1rem 1rem; font-size: 20px }
     `]
                 }),
                 __metadata("design:paramtypes", [])
