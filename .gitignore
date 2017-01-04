@@ -1,3 +1,6 @@
 node_modules
+npm-debug.log
 backup.tar
 backup
+renamer-*
+.DS_Store
