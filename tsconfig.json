@@ -12,6 +12,7 @@
         "src/app/**/*.ts"
     ],
     "exclude": [
+        "renamer-*",
         "node_modules"
     ]
 }
