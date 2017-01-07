@@ -13,6 +13,8 @@ try {
 let mainWindow;
 app.on('ready', _ => {
   console.log('ready');
+  // app.commandLine.appendSwitch("js-flags", "--harmony");
+
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768

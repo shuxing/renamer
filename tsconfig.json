@@ -1,8 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "system",
+        "target": "es2016",
+        "module": "commonjs",
         "moduleResolution": "node",
+        "lib": [
+            "dom", "es2015", "es2016", "es2017"
+        ],
         "sourceMap": false,      // .js.map files
         "declaration": false,   // .d.ts files
         "experimentalDecorators": true,

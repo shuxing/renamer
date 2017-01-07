@@ -32,11 +32,6 @@
   });
 
   var config = {
-    transpiler: 'typescript',
-    typescriptOptions: {
-      emitDecoratorMetadata: true
-    },
-
     // Maps all rxjs to the bundled version... included in head.
     paths: {
       'npm:': '../node_modules/'

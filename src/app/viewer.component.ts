@@ -90,7 +90,7 @@ export class ViewerComponent implements OnInit, OnChanges {
 
     async refresh() {
         await this.load();
-        if (!this.recursive){
+        if (!this.recursive) {
             this.tree.treeModel.expandedNodeIds = {};
         }
         ViewerComponent.match(this.nodes, this.regex, this.replacement, this.recursive, this.caseSensitive);
