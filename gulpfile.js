@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const changed = require('gulp-changed');
 const ts = require('gulp-typescript');
 const shell = require('gulp-shell');
+const Builder = require("systemjs-builder");
 
 const tsProject = ts.createProject('tsconfig.json');
 
@@ -14,6 +15,22 @@ const paths = {
     dest: 'dist',
     appDest: 'dist/app'
 };
+
+gulp.task("rxjs", () => {
+    var builder = new Builder('./node_modules');
+
+    builder.config({
+        paths: {"rxjs/*": "rxjs/*.js"},
+        map: { "rxjs": "rxjs" },
+        packages: { "rxjs": { main: 'Rx.js', defaultExtension: "js" } }
+    });
+
+    builder.bundle('rxjs', 'dist/bundles/Rx.min.js', {
+        sourceMaps: false,
+        minify: true,
+        mangle: true
+    });
+});
 
 gulp.task('ts', _ => {
     var tsResult = tsProject.src().pipe(tsProject());

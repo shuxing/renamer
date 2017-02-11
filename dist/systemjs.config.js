@@ -3,7 +3,7 @@
   var packages = {
     'app':                        { main: 'bootstrap.js', defaultExtension: 'js' },
     'lodash':                     { main: 'lodash.js', defaultExtension: 'js' },
-    'angular2-tree-component':    { main: 'dist/angular2-tree-component.js', defaultExtension: 'js' }
+    'angular2-tree-component':    { main: 'dist/angular2-tree-component.umd.js', defaultExtension: 'js' }
   };
 
   var map = {
@@ -44,6 +44,7 @@
         "rxjs/observable/*",
         "rxjs/add/operator/*",
         "rxjs/add/observable/*",
+        "rxjs/symbol/*",
         "rxjs/util/*"
       ]
     },
